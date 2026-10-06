@@ -27,6 +27,15 @@ wire  [bw-1:0] mag_b;
 wire sign_a; 
 wire sign_b;
 
+// signed magnitude multiplication: 
+        // magnitudes: 
+        assign mag_a = A[bw-1:0]; 
+        assign mag_b = B[bw-1:0];
+
+        //signs: 
+        assign sign_a = A[bw-1];
+        assign sign_b = B[bw-1];
+
 reg signed [psum_bw-1:0] psum_q;
 reg signed [bw-1:0] a_q;
 reg signed [bw-1:0] b_q;
@@ -40,15 +49,6 @@ always @* begin
     if (format == 1'b0) begin 
         psum_q = $signed(a_q) * $signed(b_q);
     end else begin 
-        // signed magnitude multiplication: 
-        // magnitudes: 
-        assign mag_a = A[bw-1:0]; 
-        assign mag_b = B[bw-1:0];
-
-        //signs: 
-        assign sign_a = A[bw-1];
-        assign sign_b = B[bw-1];
-
         // multiply signs: 
         if (sign_a ^ sign_b) begin 
             psum_q = -1 * (mag_a * mag_b);
